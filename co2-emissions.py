@@ -5,27 +5,24 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from datetime import date, timedelta
-from time import sleep
-# import pandas as pd
-# import numpy as np
+import time
+import pandas as pd
+import numpy as np
 
 """ there's probably some nice way to manage the download so the files all go to a neat place """
-# import os
-# pathOut = os.path.expanduser('~').replace("\\","/") + "/Documents/"
+import os
+pathOut = os.path.expanduser('~').replace("\\","/") + "/Documents/" # output path is set to 'C:/Users/[username]/Documents/'
 
 profile = webdriver.FirefoxProfile()
 
-# profile.set_preference("browser.download.folderList", 2)
-# profile.set_preference("browser.download.manager.showWhenStarting", False)
-# profile.set_preference("browser.download.lastDir", pathOut)
-# profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/octet-stream")
+profile.set_preference("browser.download.useDownloadDir",False)
 
 driver = webdriver.Firefox(firefox_profile=profile)
 page = "https://www.caiso.com/TodaysOutlook/Pages/emissions.html" # desired page
 
 start_date = date(2018,4,10) # earliest data is from April 10, 2018
-# end_date = date(2018,4,12) # for testing
-end_date = date.now() # latest data is from today
+end_date = date(2018,4,12) # for testing
+# end_date = date.now() # latest data is from today
 delta = end_date - start_date   # returns timedelta
 
 driver.get(page)
@@ -55,9 +52,8 @@ for i in range(delta.days + 1):
 		""", date_selector,day.strftime("%m/%d/%Y"))
 	date_selector.send_keys("",Keys.ENTER)
 	download_button.click()
-	sleep(.1)
 	download_option.click()
-	sleep(.1)
+	
 
-sleep(3)
+time.sleep(5)
 driver.close()
